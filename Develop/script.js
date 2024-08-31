@@ -4,16 +4,65 @@ const addEmployeesBtn = document.querySelector('#add-employees-btn');
 // Collect employee data
 const collectEmployees = function () {
   // TODO: Get user input to create and return an array of employee objects
+  const employees = [];
+  let addEmployee = true;
+  while (addEmployee) {
+    const firstName = prompt(`Please enter the employee's first name:`);
+    const lastName = prompt(`Please enter the employee's last name:`);
+    let salary;
+    let nonNumber = true;
+    while (nonNumber) {
+      salary = prompt(`Please enter the employee's salary (must be numerical):`);
+      if (!isNaN(salary)) {
+        nonNumber = false;
+      }
+    }
+    salary = new Number(salary);
+    let employee = {
+      firstName: firstName,
+      lastName: lastName,
+      salary: salary
+    }
+    employees.push(employee);
+    addEmployee = confirm('Would you like to add another employee?');
+  }
+  employees.sort((a, b) => {
+    const nameA = a.lastName.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.lastName.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+  
+    // names must be equal
+    return 0;
+  });
+  return employees;
 };
 
 // Display the average salary
 const displayAverageSalary = function (employeesArray) {
   // TODO: Calculate and display the average salary
+  let totalSalary = 0;
+  for (let i = 0; i < employeesArray.length; i++) {
+    totalSalary += employeesArray[i].salary;
+  }
+  const averageSalary = totalSalary / employeesArray.length;
+  console.log(`Average Salary: ${averageSalary.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  })}`);
 };
 
 // Select a random employee
 const getRandomEmployee = function (employeesArray) {
   // TODO: Select and display a random employee
+  const randomIndex = Math.floor(Math.random() * employeesArray.length);
+  const randomEmployee = employeesArray[randomIndex];
+  console.log('Random Employee:');
+  console.table(randomEmployee);
 };
 
 /*
